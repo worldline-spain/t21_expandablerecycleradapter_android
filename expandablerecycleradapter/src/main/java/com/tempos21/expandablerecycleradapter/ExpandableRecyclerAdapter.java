@@ -28,9 +28,9 @@ public abstract class ExpandableRecyclerAdapter <T extends RecyclerView.ViewHold
 
     public abstract int getChildLayout();
 
-    public abstract void onExpandableItemClicked(BaseMenuItem item);
+    public abstract void onExpandableItemClicked(ExpandableMenuItem item);
 
-    public abstract void onChildItemClicked(BaseMenuItem item);
+    public abstract void onChildItemClicked(NormalMenuItem item);
 
     public abstract void onBindViewHolderSpecific(T holder, int position);
 
@@ -114,12 +114,15 @@ public abstract class ExpandableRecyclerAdapter <T extends RecyclerView.ViewHold
             int position = getAdapterPosition();
             BaseMenuItem item = items.get(position);
             if (item instanceof ExpandableMenuItem) {
-                if (((ExpandableMenuItem) item).hasChildren()) {
+                ExpandableMenuItem expandableMenuItem = (ExpandableMenuItem) item;
+                if (expandableMenuItem.hasChildren()) {
                     expandOrCollapse();
                 }
-                onExpandableItemClicked(item);
-            } else {
-                onChildItemClicked(item);
+                onExpandableItemClicked(expandableMenuItem);
+            }
+
+            if (item instanceof NormalMenuItem) {
+                onChildItemClicked((NormalMenuItem)item);
             }
         }
 

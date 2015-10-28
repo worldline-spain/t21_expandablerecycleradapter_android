@@ -3,6 +3,7 @@ package com.tempos21.expandablerecycleradapter.app;
 import com.tempos21.expandablerecycleradapter.BaseMenuItem;
 import com.tempos21.expandablerecycleradapter.ExpandableMenuItem;
 import com.tempos21.expandablerecycleradapter.ExpandableRecyclerAdapter;
+import com.tempos21.expandablerecycleradapter.NormalMenuItem;
 
 import android.content.Context;
 import android.view.View;
@@ -21,19 +22,20 @@ public class CitiesAdapter extends ExpandableRecyclerAdapter<CitiesAdapter.Holde
     }
 
     @Override
-    public void onExpandableItemClicked(BaseMenuItem item) {
-        ExpandableMenuItem expandableMenuItem = (ExpandableMenuItem) item;
-        if (!expandableMenuItem.hasChildren()) {
-            Toast.makeText(context, expandableMenuItem.getGroupName(), Toast.LENGTH_SHORT).show();
+    public void onExpandableItemClicked(ExpandableMenuItem item) {
+        if (item.hasChildren()) {
+            Toast.makeText(context, item.getGroupName() + " expands", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(context, item.getGroupName() + " doesn't expand", Toast.LENGTH_SHORT).show();
         }
     }
 
     @Override
-    public void onChildItemClicked(BaseMenuItem item) {
-            CityMenuItem cityMenuItem = (CityMenuItem) item;
-            String message = new StringBuilder().append(cityMenuItem.getName()).append("-")
-                .append(cityMenuItem.getDegrees()).toString();
-            Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+    public void onChildItemClicked(NormalMenuItem item) {
+        CityMenuItem cityMenuItem = (CityMenuItem) item;
+        String message = new StringBuilder().append(cityMenuItem.getName()).append("-")
+            .append(cityMenuItem.getDegrees()).toString();
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
 
     @Override
