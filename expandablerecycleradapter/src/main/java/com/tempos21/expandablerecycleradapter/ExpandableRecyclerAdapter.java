@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Created by carles on 27/08/2015.
  */
-public abstract class ExpandableRecyclerAdapter <T extends ExpandableRecyclerAdapter.Holder>
+public abstract class ExpandableRecyclerAdapter <T extends RecyclerView.ViewHolder>
     extends RecyclerView.Adapter<T> {
 
     private static final int VIEW_TYPE_PARENT = 0;
@@ -27,6 +27,8 @@ public abstract class ExpandableRecyclerAdapter <T extends ExpandableRecyclerAda
     private List<BaseMenuItem> items = new ArrayList<>();
 
     public abstract int getChildLayout();
+
+    public abstract void onExpandableItemClicked(BaseMenuItem item);
 
     public abstract void onChildItemClicked(BaseMenuItem item);
 
@@ -46,16 +48,16 @@ public abstract class ExpandableRecyclerAdapter <T extends ExpandableRecyclerAda
         } else {
             view = LayoutInflater.from(parent.getContext()).inflate(getChildLayout(), parent, false);
         }
-
         return getHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(T holder, int position) {
+    public void onBindViewHolder(T tHolder, int position) {
         final BaseMenuItem item = getItem(position);
 
         if (item instanceof ExpandableMenuItem) {
             ExpandableMenuItem expandableMenuItem = (ExpandableMenuItem) item;
+            Holder holder = (Holder) tHolder;
             holder.txtGroupName.setText(expandableMenuItem.getGroupName());
             if (expandableMenuItem.hasChildren()) {
                 holder.imgExpandArrow.setVisibility(View.VISIBLE);
@@ -63,7 +65,7 @@ public abstract class ExpandableRecyclerAdapter <T extends ExpandableRecyclerAda
                 holder.imgExpandArrow.setVisibility(View.INVISIBLE);
             }
         } else {
-            onBindViewHolderSpecific(holder, position);
+            onBindViewHolderSpecific(tHolder, position);
         }
     }
 
@@ -96,9 +98,9 @@ public abstract class ExpandableRecyclerAdapter <T extends ExpandableRecyclerAda
     /*- ********************************************************************************* */
     public class Holder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        protected TextView txtGroupName;
+        private TextView txtGroupName;
 
-        protected ImageView imgExpandArrow;
+        private ImageView imgExpandArrow;
 
         public Holder(View itemView) {
             super(itemView);
@@ -111,14 +113,17 @@ public abstract class ExpandableRecyclerAdapter <T extends ExpandableRecyclerAda
         public void onClick(View v) {
             int position = getAdapterPosition();
             BaseMenuItem item = items.get(position);
-            if (item instanceof ExpandableMenuItem && ((ExpandableMenuItem) item).hasChildren()) {
-                onExpandableItemClicked();
+            if (item instanceof ExpandableMenuItem) {
+                if (((ExpandableMenuItem) item).hasChildren()) {
+                    expandOrCollapse();
+                }
+                onExpandableItemClicked(item);
             } else {
                 onChildItemClicked(item);
             }
         }
 
-        private void onExpandableItemClicked() {
+        private void expandOrCollapse() {
             int position = getAdapterPosition();
             ExpandableMenuItem item = (ExpandableMenuItem) items.get(position);
 

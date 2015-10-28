@@ -1,8 +1,8 @@
 package com.tempos21.expandablerecycleradapter.app;
 
-import com.tempos21.expandablerecycleradapter.BaseMenuItem;
+import com.tempos21.expandablerecycleradapter.NormalMenuItem;
 
-public class CityMenuItem extends BaseMenuItem {
+public class CityMenuItem extends NormalMenuItem {
 
     private String name;
     private int degrees;

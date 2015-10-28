@@ -21,17 +21,19 @@ public class CitiesAdapter extends ExpandableRecyclerAdapter<CitiesAdapter.Holde
     }
 
     @Override
-    public void onChildItemClicked(BaseMenuItem item) {
-        if (item instanceof ExpandableMenuItem) {
-            ExpandableMenuItem expandableMenuItem = (ExpandableMenuItem) item;
-            Toast.makeText(context, "NO INFO FOR " + expandableMenuItem.getGroupName(), Toast.LENGTH_SHORT).show();
+    public void onExpandableItemClicked(BaseMenuItem item) {
+        ExpandableMenuItem expandableMenuItem = (ExpandableMenuItem) item;
+        if (!expandableMenuItem.hasChildren()) {
+            Toast.makeText(context, expandableMenuItem.getGroupName(), Toast.LENGTH_SHORT).show();
         }
-        if (item instanceof CityMenuItem) {
+    }
+
+    @Override
+    public void onChildItemClicked(BaseMenuItem item) {
             CityMenuItem cityMenuItem = (CityMenuItem) item;
             String message = new StringBuilder().append(cityMenuItem.getName()).append("-")
                 .append(cityMenuItem.getDegrees()).toString();
             Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
-        }
     }
 
     @Override

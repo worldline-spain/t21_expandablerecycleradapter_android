@@ -2,6 +2,7 @@ package com.tempos21.expandablerecycleradapter.app;
 
 import com.tempos21.expandablerecycleradapter.BaseMenuItem;
 import com.tempos21.expandablerecycleradapter.ExpandableMenuItem;
+import com.tempos21.expandablerecycleradapter.NormalMenuItem;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,11 +23,11 @@ public class MenuHelper {
         CityMenuItem dublin = new CityMenuItem("Dublin", 11);
 
         list.add(new ExpandableMenuItem("Barcelona",
-            new ArrayList<BaseMenuItem>(Arrays.asList(vic, manresa, badalona, cornella))));
+            new ArrayList<NormalMenuItem>(Arrays.asList(vic, manresa, badalona, cornella))));
         list.add(new ExpandableMenuItem("Tarragona"));
-        list.add(new ExpandableMenuItem("Girona", new ArrayList<BaseMenuItem>(Arrays.asList(olot, figueres, roses))));
+        list.add(new ExpandableMenuItem("Girona", new ArrayList<NormalMenuItem>(Arrays.asList(olot, figueres, roses))));
         list.add(new ExpandableMenuItem("Lleida"));
-        list.add(new ExpandableMenuItem("Irlanda", new ArrayList<BaseMenuItem>(Arrays.asList(dublin))));
+        list.add(new ExpandableMenuItem("Irlanda", new ArrayList<NormalMenuItem>(Arrays.asList(dublin))));
         return list;
     }
 }

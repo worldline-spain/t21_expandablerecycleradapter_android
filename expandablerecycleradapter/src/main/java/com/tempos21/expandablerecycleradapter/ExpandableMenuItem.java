@@ -6,7 +6,7 @@ public class ExpandableMenuItem extends BaseMenuItem {
 
     private String groupName;
 
-    private List<BaseMenuItem> children;
+    private List<NormalMenuItem> children;
 
     private boolean expanded = false;
 
@@ -14,7 +14,7 @@ public class ExpandableMenuItem extends BaseMenuItem {
         this.groupName = groupName;
     }
 
-    public ExpandableMenuItem(String groupName, List<BaseMenuItem> children) {
+    public ExpandableMenuItem(String groupName, List<NormalMenuItem> children) {
         this.groupName = groupName;
         this.children = children;
     }
@@ -39,11 +39,11 @@ public class ExpandableMenuItem extends BaseMenuItem {
         this.expanded = expanded;
     }
 
-    public List<BaseMenuItem> getChildren() {
+    public List<NormalMenuItem> getChildren() {
         return children;
     }
 
-    public void setChildren(List<BaseMenuItem> children) {
+    public void setChildren(List<NormalMenuItem> children) {
         this.children = children;
     }
 }
