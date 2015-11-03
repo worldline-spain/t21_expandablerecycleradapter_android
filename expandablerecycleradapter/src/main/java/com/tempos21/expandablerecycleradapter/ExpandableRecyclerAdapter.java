@@ -98,6 +98,10 @@ public abstract class ExpandableRecyclerAdapter <T extends RecyclerView.ViewHold
         items.add(newItem);
     }
 
+    public List<ExpandableMenuItem> getItems() {
+        return parentItems;
+    }
+
     @Override
     public int getItemCount() {
         return items.size();
