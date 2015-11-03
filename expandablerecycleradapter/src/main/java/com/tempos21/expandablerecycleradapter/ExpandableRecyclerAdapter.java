@@ -61,11 +61,11 @@ public abstract class ExpandableRecyclerAdapter <T extends RecyclerView.ViewHold
         if (item instanceof ExpandableMenuItem) {
             ExpandableMenuItem expandableMenuItem = (ExpandableMenuItem) item;
             Holder holder = (Holder) tHolder;
-            if (holder.imgExpandArrow != null) {
+            if (holder.imgDefaultExpandArrow != null) {
                 if (expandableMenuItem.hasChildren()) {
-                    holder.imgExpandArrow.setVisibility(View.VISIBLE);
+                    holder.imgDefaultExpandArrow.setVisibility(View.VISIBLE);
                 } else {
-                    holder.imgExpandArrow.setVisibility(View.INVISIBLE);
+                    holder.imgDefaultExpandArrow.setVisibility(View.INVISIBLE);
                 }
             }
         }
@@ -108,11 +108,11 @@ public abstract class ExpandableRecyclerAdapter <T extends RecyclerView.ViewHold
     /*- ********************************************************************************* */
     public class Holder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private ImageView imgExpandArrow;
+        private ImageView imgDefaultExpandArrow;
 
         public Holder(View itemView) {
             super(itemView);
-            imgExpandArrow = (ImageView) itemView.findViewById(R.id.img_expand_arrow);
+            imgDefaultExpandArrow = (ImageView) itemView.findViewById(R.id.img_default_expand_arrow);
             itemView.setOnClickListener(this);
         }
 
@@ -145,8 +145,8 @@ public abstract class ExpandableRecyclerAdapter <T extends RecyclerView.ViewHold
                 // notifyItemRangeXXX performs an automatic animation :)
                 notifyItemRangeRemoved(position + 1, item.getChildren().size());
 
-                if (imgExpandArrow != null) {
-                    imgExpandArrow.startAnimation(
+                if (imgDefaultExpandArrow != null) {
+                    imgDefaultExpandArrow.startAnimation(
                         AnimationUtils.loadAnimation(context, R.anim.rotation_180_to_360));
                 }
 
@@ -155,8 +155,8 @@ public abstract class ExpandableRecyclerAdapter <T extends RecyclerView.ViewHold
                 items.addAll(position + 1, item.getChildren());
                 notifyItemRangeInserted(position + 1, item.getChildren().size());
 
-                if (imgExpandArrow != null) {
-                    imgExpandArrow.startAnimation(AnimationUtils.loadAnimation(context, R.anim.rotation_0_to_180));
+                if (imgDefaultExpandArrow != null) {
+                    imgDefaultExpandArrow.startAnimation(AnimationUtils.loadAnimation(context, R.anim.rotation_0_to_180));
                 }
 
             }

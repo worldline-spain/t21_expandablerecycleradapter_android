@@ -19,11 +19,6 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
         android:textColor="@android:color/black" />
 
-    <ImageView
-        android:id="@+id/img_expand_arrow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:src="@drawable/ic_chevron_down_grey600_18dp" />
+    <include layout="@layout/img_default_expand_arrow" />
 
 </LinearLayout>
