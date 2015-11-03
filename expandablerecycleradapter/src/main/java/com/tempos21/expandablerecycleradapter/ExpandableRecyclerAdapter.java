@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,13 +23,17 @@ public abstract class ExpandableRecyclerAdapter <T extends RecyclerView.ViewHold
 
     protected Context context;
 
+    private List<ExpandableMenuItem> parentItems = new ArrayList<>();
+
     private List<BaseMenuItem> items = new ArrayList<>();
+
+    public abstract int getParentLayout();
 
     public abstract int getChildLayout();
 
     public abstract void onExpandableItemClicked(ExpandableMenuItem item);
 
-    public abstract void onChildItemClicked(NormalMenuItem item);
+    public abstract void onChildItemClicked(ChildMenuItem item);
 
     public abstract void onBindViewHolderSpecific(T holder, int position);
 
@@ -44,7 +47,7 @@ public abstract class ExpandableRecyclerAdapter <T extends RecyclerView.ViewHold
     public T onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
         if (viewType == VIEW_TYPE_PARENT) {
-            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_recycle_parent, parent, false);
+            view = LayoutInflater.from(parent.getContext()).inflate(getParentLayout(), parent, false);
         } else {
             view = LayoutInflater.from(parent.getContext()).inflate(getChildLayout(), parent, false);
         }
@@ -58,20 +61,15 @@ public abstract class ExpandableRecyclerAdapter <T extends RecyclerView.ViewHold
         if (item instanceof ExpandableMenuItem) {
             ExpandableMenuItem expandableMenuItem = (ExpandableMenuItem) item;
             Holder holder = (Holder) tHolder;
-            holder.txtGroupName.setText(expandableMenuItem.getGroupName());
-            if (expandableMenuItem.hasChildren()) {
-                holder.imgExpandArrow.setVisibility(View.VISIBLE);
-            } else {
-                holder.imgExpandArrow.setVisibility(View.INVISIBLE);
+            if (holder.imgExpandArrow != null) {
+                if (expandableMenuItem.hasChildren()) {
+                    holder.imgExpandArrow.setVisibility(View.VISIBLE);
+                } else {
+                    holder.imgExpandArrow.setVisibility(View.INVISIBLE);
+                }
             }
-        } else {
-            onBindViewHolderSpecific(tHolder, position);
         }
-    }
-
-    @Override
-    public int getItemCount() {
-        return items.size();
+        onBindViewHolderSpecific(tHolder, position);
     }
 
     @Override
@@ -87,10 +85,22 @@ public abstract class ExpandableRecyclerAdapter <T extends RecyclerView.ViewHold
         return items.get(position);
     }
 
-    public void addAll(List<BaseMenuItem> newItems) {
+    public void addAll(List<ExpandableMenuItem> newItems) {
+        parentItems.clear();
+        parentItems.addAll(newItems);
         items.clear();
         items.addAll(newItems);
         notifyDataSetChanged();
+    }
+
+    public void add(ExpandableMenuItem newItem) {
+        parentItems.add(newItem);
+        items.add(newItem);
+    }
+
+    @Override
+    public int getItemCount() {
+        return items.size();
     }
 
     /*- ********************************************************************************* */
@@ -98,13 +108,10 @@ public abstract class ExpandableRecyclerAdapter <T extends RecyclerView.ViewHold
     /*- ********************************************************************************* */
     public class Holder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private TextView txtGroupName;
-
         private ImageView imgExpandArrow;
 
         public Holder(View itemView) {
             super(itemView);
-            txtGroupName = (TextView) itemView.findViewById(R.id.txt_group_name);
             imgExpandArrow = (ImageView) itemView.findViewById(R.id.img_expand_arrow);
             itemView.setOnClickListener(this);
         }
@@ -121,8 +128,8 @@ public abstract class ExpandableRecyclerAdapter <T extends RecyclerView.ViewHold
                 onExpandableItemClicked(expandableMenuItem);
             }
 
-            if (item instanceof NormalMenuItem) {
-                onChildItemClicked((NormalMenuItem)item);
+            if (item instanceof ChildMenuItem) {
+                onChildItemClicked((ChildMenuItem)item);
             }
         }
 
@@ -137,14 +144,20 @@ public abstract class ExpandableRecyclerAdapter <T extends RecyclerView.ViewHold
                 }
                 // notifyItemRangeXXX performs an automatic animation :)
                 notifyItemRangeRemoved(position + 1, item.getChildren().size());
-                imgExpandArrow.startAnimation(
-                    AnimationUtils.loadAnimation(context, R.anim.rotation_180_to_360));
+
+                if (imgExpandArrow != null) {
+                    imgExpandArrow.startAnimation(
+                        AnimationUtils.loadAnimation(context, R.anim.rotation_180_to_360));
+                }
 
             } else {
                 // is collapsed -> expand
                 items.addAll(position + 1, item.getChildren());
                 notifyItemRangeInserted(position + 1, item.getChildren().size());
-                imgExpandArrow.startAnimation(AnimationUtils.loadAnimation(context, R.anim.rotation_0_to_180));
+
+                if (imgExpandArrow != null) {
+                    imgExpandArrow.startAnimation(AnimationUtils.loadAnimation(context, R.anim.rotation_0_to_180));
+                }
 
             }
             item.setExpanded(!item.isExpanded());

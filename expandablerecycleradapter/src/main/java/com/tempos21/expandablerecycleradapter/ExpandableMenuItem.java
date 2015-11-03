@@ -4,27 +4,14 @@ import java.util.List;
 
 public class ExpandableMenuItem extends BaseMenuItem {
 
-    private String groupName;
-
-    private List<NormalMenuItem> children;
+    private List<ChildMenuItem> children;
 
     private boolean expanded = false;
 
-    public ExpandableMenuItem(String groupName) {
-        this.groupName = groupName;
-    }
+    public ExpandableMenuItem() { }
 
-    public ExpandableMenuItem(String groupName, List<NormalMenuItem> children) {
-        this.groupName = groupName;
+    public ExpandableMenuItem(List<ChildMenuItem> children) {
         this.children = children;
-    }
-
-    public String getGroupName() {
-        return groupName;
-    }
-
-    public void setGroupName(String groupName) {
-        this.groupName = groupName;
     }
 
     public boolean hasChildren() {
@@ -39,11 +26,11 @@ public class ExpandableMenuItem extends BaseMenuItem {
         this.expanded = expanded;
     }
 
-    public List<NormalMenuItem> getChildren() {
+    public List<ChildMenuItem> getChildren() {
         return children;
     }
 
-    public void setChildren(List<NormalMenuItem> children) {
+    public void setChildren(List<ChildMenuItem> children) {
         this.children = children;
     }
 }

@@ -1,13 +1,13 @@
 package com.tempos21.expandablerecycleradapter.app;
 
-import com.tempos21.expandablerecycleradapter.NormalMenuItem;
+import com.tempos21.expandablerecycleradapter.ChildMenuItem;
 
-public class CityMenuItem extends NormalMenuItem {
+public class CityChildMenuItem extends ChildMenuItem {
 
     private String name;
     private int degrees;
 
-    public CityMenuItem(String name, int degrees) {
+    public CityChildMenuItem(String name, int degrees) {
         this.name = name;
         this.degrees = degrees;
     }

@@ -3,7 +3,7 @@ package com.tempos21.expandablerecycleradapter.app;
 import com.tempos21.expandablerecycleradapter.BaseMenuItem;
 import com.tempos21.expandablerecycleradapter.ExpandableMenuItem;
 import com.tempos21.expandablerecycleradapter.ExpandableRecyclerAdapter;
-import com.tempos21.expandablerecycleradapter.NormalMenuItem;
+import com.tempos21.expandablerecycleradapter.ChildMenuItem;
 
 import android.content.Context;
 import android.view.View;
@@ -17,22 +17,28 @@ public class CitiesAdapter extends ExpandableRecyclerAdapter<CitiesAdapter.Holde
     }
 
     @Override
+    public int getParentLayout() {
+        return R.layout.list_item_recycle_parent;
+    }
+
+    @Override
     public int getChildLayout() {
         return R.layout.list_item_recycle_child;
     }
 
     @Override
     public void onExpandableItemClicked(ExpandableMenuItem item) {
+        CityParentMenuItem cityMenuItem = (CityParentMenuItem) item;
         if (item.hasChildren()) {
-            Toast.makeText(context, item.getGroupName() + " expands", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, cityMenuItem.getGroupName() + " expands", Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(context, item.getGroupName() + " doesn't expand", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, cityMenuItem.getGroupName() + " doesn't expand", Toast.LENGTH_SHORT).show();
         }
     }
 
     @Override
-    public void onChildItemClicked(NormalMenuItem item) {
-        CityMenuItem cityMenuItem = (CityMenuItem) item;
+    public void onChildItemClicked(ChildMenuItem item) {
+        CityChildMenuItem cityMenuItem = (CityChildMenuItem) item;
         String message = new StringBuilder().append(cityMenuItem.getName()).append("-")
             .append(cityMenuItem.getDegrees()).toString();
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
@@ -41,8 +47,12 @@ public class CitiesAdapter extends ExpandableRecyclerAdapter<CitiesAdapter.Holde
     @Override
     public void onBindViewHolderSpecific(Holder holder, int position) {
         final BaseMenuItem item = getItem(position);
-        if (item instanceof CityMenuItem) {
-            CityMenuItem cityMenuItem = (CityMenuItem) item;
+        if (item instanceof CityParentMenuItem) {
+            CityParentMenuItem cityParentMenuItem = (CityParentMenuItem) item;
+            holder.txtGroupName.setText(cityParentMenuItem.getGroupName());
+        }
+        if (item instanceof CityChildMenuItem) {
+            CityChildMenuItem cityMenuItem = (CityChildMenuItem) item;
             holder.txtCityName.setText(cityMenuItem.getName());
             holder.txtCityDegrees.setText(String.valueOf(cityMenuItem.getDegrees()).concat("º"));
         }
@@ -62,10 +72,16 @@ public class CitiesAdapter extends ExpandableRecyclerAdapter<CitiesAdapter.Holde
 
         private TextView txtCityDegrees;
 
+        private TextView txtGroupName;
+
         public Holder(View itemView) {
             super(itemView);
+            // CityChildMenuItem views
             txtCityName = (TextView) itemView.findViewById(R.id.txt_city_name);
             txtCityDegrees = (TextView) itemView.findViewById(R.id.txt_city_degrees);
+            // CityParentMenuItem views
+            txtGroupName = (TextView) itemView.findViewById(R.id.txt_group_name);
+
         }
     }
 }
