@@ -17,6 +17,8 @@ import java.util.List;
 public abstract class ExpandableRecyclerAdapter <T extends RecyclerView.ViewHolder>
     extends RecyclerView.Adapter<T> {
 
+    protected static final int INVALID_POSITION = -1;
+
     private static final int VIEW_TYPE_PARENT = 0;
 
     private static final int VIEW_TYPE_CHILDREN = 1;
@@ -83,6 +85,20 @@ public abstract class ExpandableRecyclerAdapter <T extends RecyclerView.ViewHold
 
     protected BaseMenuItem getItem(int position) {
         return items.get(position);
+    }
+
+    protected int getItemPosition(BaseMenuItem item) {
+        if (items != null) {
+            int size = getItemCount();
+            BaseMenuItem currentItem;
+            for (int position = 0; position < size; position++) {
+                currentItem = getItem(position);
+                if (currentItem == item) {
+                    return position;
+                }
+            }
+        }
+        return INVALID_POSITION;
     }
 
     public void addAll(List<ExpandableMenuItem> newItems) {

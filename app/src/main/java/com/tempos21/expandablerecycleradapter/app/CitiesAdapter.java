@@ -1,9 +1,9 @@
 package com.tempos21.expandablerecycleradapter.app;
 
 import com.tempos21.expandablerecycleradapter.BaseMenuItem;
+import com.tempos21.expandablerecycleradapter.ChildMenuItem;
 import com.tempos21.expandablerecycleradapter.ExpandableMenuItem;
 import com.tempos21.expandablerecycleradapter.ExpandableRecyclerAdapter;
-import com.tempos21.expandablerecycleradapter.ChildMenuItem;
 
 import android.content.Context;
 import android.view.View;
@@ -39,9 +39,12 @@ public class CitiesAdapter extends ExpandableRecyclerAdapter<CitiesAdapter.Holde
     @Override
     public void onChildItemClicked(ChildMenuItem item) {
         CityChildMenuItem cityMenuItem = (CityChildMenuItem) item;
-        String message = new StringBuilder().append(cityMenuItem.getName()).append("-")
+        String message = new StringBuilder()
+            .append(getItemPosition(item)).append("-")
+            .append(cityMenuItem.getName()).append("-")
             .append(cityMenuItem.getDegrees()).toString();
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+        // notifyItemChanged(getItemPosition(item));
     }
 
     @Override
