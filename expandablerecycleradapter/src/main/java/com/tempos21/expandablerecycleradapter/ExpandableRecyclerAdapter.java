@@ -101,6 +101,23 @@ public abstract class ExpandableRecyclerAdapter <T extends RecyclerView.ViewHold
         return INVALID_POSITION;
     }
 
+    protected int getParentPosition(ChildMenuItem item) {
+        if (items != null) {
+            int size = getItemCount();
+            ExpandableMenuItem currentItem;
+            for (int position = 0; position < size; position++) {
+                if (getItem(position) instanceof ExpandableMenuItem) {
+                    currentItem = (ExpandableMenuItem) getItem(position);
+                    if (currentItem.hasChildren() && currentItem.getChildren().contains(item)) {
+                        return position;
+                    }
+                }
+            }
+        }
+        return INVALID_POSITION;
+    }
+
+
     public void addAll(List<ExpandableMenuItem> newItems) {
         parentItems.clear();
         parentItems.addAll(newItems);

@@ -1,14 +1,14 @@
 package com.tempos21.expandablerecycleradapter.app;
 
-import com.tempos21.expandablerecycleradapter.BaseMenuItem;
-import com.tempos21.expandablerecycleradapter.ChildMenuItem;
-import com.tempos21.expandablerecycleradapter.ExpandableMenuItem;
-import com.tempos21.expandablerecycleradapter.ExpandableRecyclerAdapter;
-
 import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.tempos21.expandablerecycleradapter.BaseMenuItem;
+import com.tempos21.expandablerecycleradapter.ChildMenuItem;
+import com.tempos21.expandablerecycleradapter.ExpandableMenuItem;
+import com.tempos21.expandablerecycleradapter.ExpandableRecyclerAdapter;
 
 public class CitiesAdapter extends ExpandableRecyclerAdapter<CitiesAdapter.Holder> {
 
@@ -42,7 +42,10 @@ public class CitiesAdapter extends ExpandableRecyclerAdapter<CitiesAdapter.Holde
         String message = new StringBuilder()
             .append(getItemPosition(item)).append("-")
             .append(cityMenuItem.getName()).append("-")
-            .append(cityMenuItem.getDegrees()).toString();
+            .append(cityMenuItem.getDegrees()).append("(")
+            .append(((CityParentMenuItem)getItem(getParentPosition(item))).getGroupName())
+                .append(")")
+                .toString();
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
         // notifyItemChanged(getItemPosition(item));
     }
