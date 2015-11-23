@@ -8,8 +8,8 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 23
-        versionCode 10010
-        versionName "1.0.10"
+        versionCode 10011
+        versionName "1.0.11"
     }
     buildTypes {
         release {
@@ -59,7 +59,6 @@ uploadArchives {
 task install(dependsOn: uploadArchives)
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:23.1.0'
-    compile "com.android.support:recyclerview-v7:23.1.0"
+    provided 'com.android.support:appcompat-v7:23.1.0'
+    provided "com.android.support:recyclerview-v7:23.1.0"
 }
