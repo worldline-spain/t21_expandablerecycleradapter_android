@@ -1,4 +1,6 @@
-# t21_expandablerecycleradapter_android
+[![](https://jitpack.io/v/worldline-spain/t21_expandablerecycleradapter_android.svg)](https://jitpack.io/#worldline-spain/t21_expandablerecycleradapter_android)
+
+# README
 **Adapter to allow expandable menus**
 
 Each RecyclerView has 'parent' elements that expand/collapse to show 'child' subelements. 
