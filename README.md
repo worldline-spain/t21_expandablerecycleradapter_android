@@ -17,7 +17,7 @@ compile 'com.android.support:recyclerview-v7:23.1.0'
 allprojects {
     repositories {
         jcenter()
-        maven { url "https://jitpack.io <https://jitpack.io/> " }
+        maven { url "https://jitpack.io" }
     }
 }
 
