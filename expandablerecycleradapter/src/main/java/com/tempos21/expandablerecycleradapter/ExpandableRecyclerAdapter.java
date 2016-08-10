@@ -156,6 +156,10 @@ public abstract class ExpandableRecyclerAdapter <T extends RecyclerView.ViewHold
         @Override
         public void onClick(View v) {
             int position = getAdapterPosition();
+            if (position == INVALID_POSITION || position >= items.size()) {
+                return;
+            }
+
             BaseMenuItem item = items.get(position);
             if (item instanceof ExpandableMenuItem) {
                 ExpandableMenuItem expandableMenuItem = (ExpandableMenuItem) item;
