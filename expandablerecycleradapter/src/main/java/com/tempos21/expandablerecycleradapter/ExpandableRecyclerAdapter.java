@@ -13,9 +13,10 @@ import java.util.List;
 
 /**
  * Created by carles on 27/08/2015.
+ * Adapter to expand and collapse
  */
-public abstract class ExpandableRecyclerAdapter <T extends RecyclerView.ViewHolder>
-    extends RecyclerView.Adapter<T> {
+public abstract class ExpandableRecyclerAdapter<T extends RecyclerView.ViewHolder>
+        extends RecyclerView.Adapter<T> {
 
     protected static final int INVALID_POSITION = -1;
 
@@ -40,6 +41,8 @@ public abstract class ExpandableRecyclerAdapter <T extends RecyclerView.ViewHold
     public abstract void onBindViewHolderSpecific(T holder, int position);
 
     public abstract T getHolder(View view);
+
+    private boolean oneExpandedMode;
 
     public ExpandableRecyclerAdapter(final Context context) {
         this.context = context;
@@ -70,6 +73,7 @@ public abstract class ExpandableRecyclerAdapter <T extends RecyclerView.ViewHold
                     holder.imgDefaultExpandArrow.setVisibility(View.INVISIBLE);
                 }
             }
+            expandableMenuItem.setHolder(holder);
         }
         onBindViewHolderSpecific(tHolder, position);
     }
@@ -135,6 +139,24 @@ public abstract class ExpandableRecyclerAdapter <T extends RecyclerView.ViewHold
         return parentItems;
     }
 
+    /**
+     * Indicate if one expanded mode is active
+     *
+     * @return boolean true of one expanded mode activated
+     */
+    public boolean isOneExpandedMode() {
+        return oneExpandedMode;
+    }
+
+    /**
+     * Activate one expanted parent mode
+     *
+     * @param oneExpandedMode boolean true if mode active
+     */
+    public void setOneExpandedMode(boolean oneExpandedMode) {
+        this.oneExpandedMode = oneExpandedMode;
+    }
+
     @Override
     public int getItemCount() {
         return items.size();
@@ -159,18 +181,20 @@ public abstract class ExpandableRecyclerAdapter <T extends RecyclerView.ViewHold
             if (position == INVALID_POSITION || position >= items.size()) {
                 return;
             }
-
             BaseMenuItem item = items.get(position);
             if (item instanceof ExpandableMenuItem) {
                 ExpandableMenuItem expandableMenuItem = (ExpandableMenuItem) item;
                 if (expandableMenuItem.hasChildren()) {
+                    if (oneExpandedMode) {
+                        collapseOthers(position);
+                    }
                     expandOrCollapse();
                 }
                 onExpandableItemClicked(expandableMenuItem);
             }
 
             if (item instanceof ChildMenuItem) {
-                onChildItemClicked((ChildMenuItem)item);
+                onChildItemClicked((ChildMenuItem) item);
             }
         }
 
@@ -188,7 +212,7 @@ public abstract class ExpandableRecyclerAdapter <T extends RecyclerView.ViewHold
 
                 if (imgDefaultExpandArrow != null) {
                     imgDefaultExpandArrow.startAnimation(
-                        AnimationUtils.loadAnimation(context, R.anim.rotation_180_to_360));
+                            AnimationUtils.loadAnimation(context, R.anim.rotation_180_to_360));
                 }
 
             } else {
@@ -202,6 +226,31 @@ public abstract class ExpandableRecyclerAdapter <T extends RecyclerView.ViewHold
 
             }
             item.setExpanded(!item.isExpanded());
+        }
+
+        private void collapseOthers(int currentPosition) {
+            for (int n = 0; n < items.size(); n++) {
+                BaseMenuItem baseMenuItem = items.get(n);
+                if (baseMenuItem instanceof ExpandableMenuItem && currentPosition != n) {
+                    ExpandableMenuItem expandableMenuItem = (ExpandableMenuItem) baseMenuItem;
+                    if (expandableMenuItem.isExpanded()) {
+                        for (int i = 0; i < expandableMenuItem.getChildren().size(); i++) {
+                            items.remove(n + 1);
+                        }
+                        // notifyItemRangeXXX performs an automatic animation :)
+                        notifyItemRangeRemoved(n + 1, expandableMenuItem.getChildren().size());
+                        expandableMenuItem.setExpanded(!expandableMenuItem.isExpanded());
+                        if (expandableMenuItem.getHolder() != null) {
+                            ImageView ivItem = expandableMenuItem.getHolder().imgDefaultExpandArrow;
+                            if (ivItem != null) {
+                                ivItem.startAnimation(
+                                        AnimationUtils.loadAnimation(context, R.anim.rotation_180_to_360));
+                            }
+                        }
+                        return;
+                    }
+                }
+            }
         }
     }
 }
