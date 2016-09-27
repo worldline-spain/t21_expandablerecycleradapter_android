@@ -8,6 +8,8 @@ public class ExpandableMenuItem extends BaseMenuItem {
 
     private boolean expanded = false;
 
+    private ExpandableRecyclerAdapter.Holder holder;
+
     public ExpandableMenuItem() { }
 
     public ExpandableMenuItem(List<ChildMenuItem> children) {
@@ -32,5 +34,13 @@ public class ExpandableMenuItem extends BaseMenuItem {
 
     public void setChildren(List<ChildMenuItem> children) {
         this.children = children;
+    }
+
+    public ExpandableRecyclerAdapter.Holder getHolder() {
+        return holder;
+    }
+
+    public void setHolder(ExpandableRecyclerAdapter.Holder holder) {
+        this.holder = holder;
     }
 }
