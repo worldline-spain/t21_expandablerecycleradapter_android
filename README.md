@@ -35,6 +35,7 @@ public abstract T getHolder(View view);
 ```
 - Create two types of elements: one extends ExpandableMenuItem, the other extends ChildMenuItem. Each expandable item can contain zero or more ChildMenuItems
 - Populate the adapter with a list of your expandable items
+- You can set to true the Adapter variable oneExpandedMode to enable "One Expanded Only". This functionality, collapse the current ExpandableMenuItem expanded when you want to expand another. This functionality is deactivated by default.
 - In your "parent item" layout, you can add this 'include' to have an arrow that animates when an item is expanded/collapsed. However, you can use a custom arrow (set its id to img_default_expand_arrow)
 ```xml
 <include layout="@layout/img_default_expand_arrow" />
