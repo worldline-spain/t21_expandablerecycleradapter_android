@@ -10,7 +10,7 @@ Each RecyclerView has 'parent' elements that expand/collapse to show 'child' sub
 ###How to use it?
 - Add these dependencies to your project:
 ```
-compile 'com.github.worldline-spain:t21_expandablerecycleradapter_android:1.0.13'
+compile 'com.github.worldline-spain:t21_expandablerecycleradapter_android:1.0.14'
 compile 'com.android.support:appcompat-v7:23.1.0'
 compile 'com.android.support:recyclerview-v7:23.1.0'
 ```
