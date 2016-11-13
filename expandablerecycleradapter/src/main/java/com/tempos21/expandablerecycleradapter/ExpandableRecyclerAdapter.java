@@ -142,13 +142,8 @@ public abstract class ExpandableRecyclerAdapter<T extends RecyclerView.ViewHolde
             items.add(position, childMenuItem);
             notifyItemInserted(position);
         } else {
-            expandableMenuItem.setExpanded(true);
-            items.addAll(position, expandableMenuItem.getChildren());
-            int positionEnd = expandableMenuItem.getChildren().size();
-            notifyItemChanged(getItemPosition(expandableMenuItem));
-            notifyItemRangeInserted(position, positionEnd);
+            expandableMenuItem.getHolder().itemView.performClick();
         }
-
     }
 
     public List<ExpandableMenuItem> getItems() {
@@ -243,7 +238,7 @@ public abstract class ExpandableRecyclerAdapter<T extends RecyclerView.ViewHolde
             }
             item.setExpanded(!item.isExpanded());
         }
-
+        
         private void collapseOthers(int currentPosition) {
             for (int n = 0; n < items.size(); n++) {
                 BaseMenuItem baseMenuItem = items.get(n);
@@ -269,4 +264,5 @@ public abstract class ExpandableRecyclerAdapter<T extends RecyclerView.ViewHolde
             }
         }
     }
+
 }
