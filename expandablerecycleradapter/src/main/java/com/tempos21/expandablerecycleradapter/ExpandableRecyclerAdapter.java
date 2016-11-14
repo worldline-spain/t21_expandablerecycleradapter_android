@@ -68,6 +68,7 @@ public abstract class ExpandableRecyclerAdapter<T extends RecyclerView.ViewHolde
             Holder holder = (Holder) tHolder;
             if (holder.imgDefaultExpandArrow != null) {
                 if (expandableMenuItem.hasChildren()) {
+                    updateArrowStatus(expandableMenuItem.isExpanded(), holder.imgDefaultExpandArrow);
                     holder.imgDefaultExpandArrow.setVisibility(View.VISIBLE);
                 } else {
                     holder.imgDefaultExpandArrow.setVisibility(View.INVISIBLE);
@@ -173,6 +174,13 @@ public abstract class ExpandableRecyclerAdapter<T extends RecyclerView.ViewHolde
         return items.size();
     }
 
+    private void updateArrowStatus(boolean isExpanded, ImageView arrow) {
+        if (isExpanded && arrow != null) {
+            arrow.startAnimation(
+                    AnimationUtils.loadAnimation(context, R.anim.rotation_0_to_180));
+        }
+    }
+
     /*- ********************************************************************************* */
     /*- ********************************************************************************* */
     /*- ********************************************************************************* */
@@ -238,7 +246,7 @@ public abstract class ExpandableRecyclerAdapter<T extends RecyclerView.ViewHolde
             }
             item.setExpanded(!item.isExpanded());
         }
-        
+
         private void collapseOthers(int currentPosition) {
             for (int n = 0; n < items.size(); n++) {
                 BaseMenuItem baseMenuItem = items.get(n);
