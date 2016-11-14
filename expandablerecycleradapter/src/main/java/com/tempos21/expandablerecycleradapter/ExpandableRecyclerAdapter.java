@@ -147,6 +147,17 @@ public abstract class ExpandableRecyclerAdapter<T extends RecyclerView.ViewHolde
         }
     }
 
+    public void removeChildFromParent(ChildMenuItem childMenuItem, ExpandableMenuItem expandableMenuItem) {
+        int removedPos = getItemPosition(childMenuItem);
+        expandableMenuItem.getChildren().remove(childMenuItem);
+        items.remove(removedPos);
+        notifyItemRemoved(removedPos);
+        if (!expandableMenuItem.hasChildren()) {
+            expandableMenuItem.setExpanded(false);
+            notifyItemChanged(--removedPos);
+        }
+    }
+
     public List<ExpandableMenuItem> getItems() {
         return parentItems;
     }
